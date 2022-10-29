@@ -1,0 +1,19 @@
+{
+  "name": "reactive-utils",
+  "version": "0.1.0",
+  "description": "bunch of utilities for reactive",
+  "main": "state/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "author": "aldinh777",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.2.2",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@aldinh777/reactive": "^0.28.1"
+  }
+}

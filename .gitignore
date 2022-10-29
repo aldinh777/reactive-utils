@@ -1,0 +1,9 @@
+.vscode
+node_modules
+*.d.ts
+collection/**/*.js
+view/**/*.js
+helper/**/*.js
+index.js
+debug.ts
+debug.js
