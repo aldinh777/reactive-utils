@@ -1,5 +1,5 @@
 {
-  "name": "reactive-utils",
+  "name": "@aldinh777/reactive-utils",
   "version": "0.1.0",
   "description": "bunch of utilities for reactive",
   "main": "state/index.js",
