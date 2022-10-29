@@ -1,5 +1,4 @@
-import { StateMapObject } from '@aldinh777/reactive/collection/StateMap';
-import { MutableStateMap } from '@aldinh777/reactive/collection/MutableStateMap';
+import { StateMapObject, MutableStateMap } from '@aldinh777/reactive/collection';
 
 interface SimpleObject<T> {
     [key: string]: T;

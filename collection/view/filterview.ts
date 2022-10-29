@@ -1,5 +1,4 @@
-import { StateList } from '@aldinh777/reactive/collection/StateList';
-import { ListViewFiltered } from '@aldinh777/reactive/collection/view/ListViewFiltered';
+import { StateList, ListViewFiltered } from '@aldinh777/reactive/collection';
 
 export function filterview<T>(
     list: StateList<T>,

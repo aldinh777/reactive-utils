@@ -1,5 +1,4 @@
-import { StateList } from '@aldinh777/reactive/collection/StateList';
-import { ListViewSorted } from '@aldinh777/reactive/collection/view/ListViewSorted';
+import { StateList, ListViewSorted } from '@aldinh777/reactive/collection';
 
 export function sortview<T>(
     list: StateList<T>,
