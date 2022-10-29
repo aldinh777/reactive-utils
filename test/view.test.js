@@ -1,5 +1,4 @@
-const { statelist } = require('../collection');
-const { filterview, mapview, sortview } = require('../collection/view');
+const { statelist, filterview, mapview, sortview } = require('../collection');
 
 describe('Mapped State List', function () {
     const list = statelist([1, 2, 3, 4, 5]);
