@@ -1,6 +1,6 @@
 {
   "name": "@aldinh777/reactive-utils",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "bunch of utilities for reactive",
   "main": "state/index.js",
   "scripts": {
