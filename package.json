@@ -14,6 +14,6 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@aldinh777/reactive": "^0.28.2"
+    "@aldinh777/reactive": "^0.28.4"
   }
 }
