@@ -9,3 +9,7 @@ del collection\*.d.ts
 del collection\*.js
 del collection\view\*.d.ts
 del collection\view\*.js
+
+:: Validator
+del validator\*.d.ts
+del validator\*.js
