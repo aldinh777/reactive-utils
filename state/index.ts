@@ -7,6 +7,8 @@ import { State, ChangeHandler, StateSubscription } from '@aldinh777/reactive';
 export type MultiChangeHandler<T> = (values: T[]) => any;
 export type MultiStateSubscription<T> = Subscription<State<T>[], MultiChangeHandler<T>>;
 
+type ToggleOutput = [state: StateProxy<boolean>, open: Function, close: Function, toggle: Function];
+
 export interface StateProxy<T> extends State<T> {
     value: T;
 }
@@ -58,7 +60,7 @@ export function stateObserveAll<T, U>(
     return o;
 }
 
-export function stateToggle(initial: boolean) {
+export function stateToggle(initial: boolean): ToggleOutput {
     const st = state(initial);
     const open = () => st.setValue(true);
     const close = () => st.setValue(false);
@@ -66,7 +68,7 @@ export function stateToggle(initial: boolean) {
     return [st, open, close, toggle];
 }
 
-export function stateLocalStorage(key: string, initial: string) {
+export function stateLocalStorage(key: string, initial: string): StateProxy<string> {
     const st = state(initial);
     const local = localStorage.getItem(key);
     if (local) {
