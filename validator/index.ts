@@ -1,3 +1,4 @@
+import { has } from '@aldinh777/toolbox/object/validate';
 import { State } from '@aldinh777/reactive';
 import {
     MutableStateCollection,
@@ -6,28 +7,18 @@ import {
     StateMap
 } from '@aldinh777/reactive/collection';
 
-export function has(obj: any, keys: string[]): boolean {
-    return typeof obj === 'object' && keys.every((key) => Reflect.has(obj, key));
-}
+export const isState = <T>(item: object): item is State<T> =>
+    has(item, 'addListener', 'onChange', 'getValue', 'setValue');
 
-export function isState<T>(item: any): item is State<T> {
-    return has(item, ['addListener', 'onChange', 'getValue', 'setValue']);
-}
+export const isCollection = <K, V, R>(item: object): item is StateCollection<K, V, R> =>
+    has(item, 'raw', 'get', 'trigger', 'onUpdate', 'onInsert', 'onDelete');
 
-export function isCollection<K, V, R>(item: any): item is StateCollection<K, V, R> {
-    return has(item, ['raw', 'get', 'trigger', 'onUpdate', 'onInsert', 'onDelete']);
-}
-
-export function isMutable<K, V, R>(
+export const isMutable = <K, V, R>(
     item: StateCollection<K, V, R>
-): item is MutableStateCollection<K, V, R> {
-    return has(item, ['set']);
-}
+): item is MutableStateCollection<K, V, R> => has(item, 'set');
 
-export function isList<T>(item: any): item is StateList<T> {
-    return isCollection(item) && item.raw instanceof Array;
-}
+export const isList = <T>(item: object): item is StateList<T> =>
+    isCollection(item) && item.raw instanceof Array;
 
-export function isMap<T>(item: any): item is StateMap<T> {
-    return isCollection(item) && item.raw instanceof Map;
-}
+export const isMap = <T>(item: object): item is StateMap<T> =>
+    isCollection(item) && item.raw instanceof Map;

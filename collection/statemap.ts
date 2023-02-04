@@ -5,8 +5,8 @@ interface SimpleObject<T> {
 }
 export type StateMapProxy<T> = MutableStateMap<T> & SimpleObject<T>;
 
-export function statemap<T>(map: StateMapObject<T> | Map<string, T>): StateMapProxy<T> {
-    return new Proxy(new MutableStateMap(map), {
+export const statemap = <T>(map: StateMapObject<T> | Map<string, T>): StateMapProxy<T> =>
+    new Proxy(new MutableStateMap(map), {
         get(target, p, receiver) {
             if (!Reflect.has(target, p)) {
                 if (typeof p === 'string') {
@@ -25,4 +25,3 @@ export function statemap<T>(map: StateMapObject<T> | Map<string, T>): StateMapPr
             return Reflect.set(target, p, value, receiver);
         }
     }) as StateMapProxy<T>;
-}

@@ -1,9 +1,7 @@
-.vscode
 node_modules
 *.d.ts
+state/**/*.js
 collection/**/*.js
-view/**/*.js
-helper/**/*.js
-index.js
+validator/**/*.js
 debug.ts
 debug.js

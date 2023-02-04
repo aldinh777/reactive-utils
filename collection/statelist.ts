@@ -4,8 +4,8 @@ export interface StateListProxy<T> extends MutableStateList<T> {
     [index: number]: T;
 }
 
-export function statelist<T>(list: T[]): StateListProxy<T> {
-    return new Proxy(new MutableStateList(list), {
+export const statelist = <T>(list: T[]): StateListProxy<T> =>
+    new Proxy(new MutableStateList(list), {
         get(target, p, receiver) {
             if (typeof p === 'string') {
                 const index = parseInt(p);
@@ -26,4 +26,3 @@ export function statelist<T>(list: T[]): StateListProxy<T> {
             return Reflect.set(target, p, value, receiver);
         }
     }) as StateListProxy<T>;
-}
