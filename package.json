@@ -13,7 +13,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@aldinh777/reactive": "^0.28.6",
-    "@aldinh777/toolbox": "^1.0.1"
+    "@aldinh777/reactive": "^0.28.7",
+    "@aldinh777/toolbox": "^1.0.2"
   }
 }

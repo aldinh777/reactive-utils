@@ -3,5 +3,4 @@ node_modules
 state/**/*.js
 collection/**/*.js
 validator/**/*.js
-debug.ts
-debug.js
+debug
