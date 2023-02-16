@@ -7,13 +7,11 @@ import { State, ChangeHandler, StateSubscription } from '@aldinh777/reactive';
 export type MultiChangeHandler<T> = (values: T[]) => any;
 export type MultiStateSubscription<T> = Subscription<State<T>[], MultiChangeHandler<T>>;
 
-type ToggleOutput = [state: StateProxy<boolean>, open: Function, close: Function, toggle: Function];
-
 export interface StateProxy<T> extends State<T> {
     value: T;
 }
 
-export const state = <T>(initial: T): StateProxy<T> => {
+export const state = <T>(initial?: T): StateProxy<T> => {
     const o = new State(initial);
     return Object.defineProperties(o, {
         value: {
@@ -45,37 +43,44 @@ export const observeAll = <T>(
     return createMultiSubscriptions(states, handler, subscriptions);
 };
 
-export const stateObserve = <T, U>(st: State<T>, handler: (value: T) => U): StateProxy<U> => {
-    const o: StateProxy<any> = state(undefined);
-    observe(st, (value) => o.setValue(handler(value)));
-    return o;
+export const stateObserve = <T, U>(
+    st: State<T>,
+    handler: (value: T) => U
+): [StateProxy<U>, StateSubscription<T>] => {
+    const s: StateProxy<U> = state();
+    const sub = observe(st, (value) => s.setValue(handler(value)));
+    return [s, sub];
 };
 
 export const stateObserveAll = <T, U>(
     states: State<T>[],
     handler: (values: T[]) => U
-): StateProxy<U> => {
-    const o: StateProxy<any> = state(undefined);
-    observeAll(states, (values) => o.setValue(handler(values)));
-    return o;
+): [StateProxy<U>, MultiStateSubscription<T>] => {
+    const s: StateProxy<U> = state();
+    const sub = observeAll(states, (values) => s.setValue(handler(values)));
+    return [s, sub];
 };
 
+type ToggleOutput = [state: StateProxy<boolean>, open: Function, close: Function, toggle: Function];
 export const stateToggle = (initial: boolean): ToggleOutput => {
-    const st = state(initial);
-    const open = () => st.setValue(true);
-    const close = () => st.setValue(false);
-    const toggle = () => st.setValue(!st.getValue());
-    return [st, open, close, toggle];
+    const s = state(initial);
+    const open = () => s.setValue(true);
+    const close = () => s.setValue(false);
+    const toggle = () => s.setValue(!s.getValue());
+    return [s, open, close, toggle];
 };
 
-export const stateLocalStorage = (key: string, initial: string): StateProxy<string> => {
-    const st = state(initial);
+export const stateLocalStorage = (
+    key: string,
+    initial: string
+): [StateProxy<string>, StateSubscription<string>] => {
+    const s = state(initial);
     const local = localStorage.getItem(key);
     if (local) {
-        st.setValue(local);
+        s.setValue(local);
     } else {
-        localStorage.setItem(key, st.getValue());
+        localStorage.setItem(key, s.getValue());
     }
-    st.onChange((value) => localStorage.setItem(key, value));
-    return st;
+    const sub = s.onChange((value) => localStorage.setItem(key, value));
+    return [s, sub];
 };
