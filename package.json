@@ -1,19 +1,18 @@
 {
   "name": "@aldinh777/reactive-utils",
   "version": "0.1.17",
-  "description": "bunch of utilities for reactive",
-  "main": "state/index.js",
-  "scripts": {
-    "build": "tsc",
-    "test": "jest"
-  },
   "author": "aldinh777",
-  "license": "ISC",
+  "main": "state/index.js",
   "devDependencies": {
     "typescript": "^4.9.5"
   },
+  "description": "bunch of utilities for reactive",
+  "license": "ISC",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
-    "@aldinh777/reactive": "^0.28.11",
-    "@aldinh777/toolbox": "^1.2.1"
+    "@aldinh777/reactive": "^0.29.0",
+    "@aldinh777/toolbox": "^1.3.0"
   }
 }

@@ -1,0 +1,10 @@
+{
+    "files.exclude": {
+        "collection/**/*.js": true,
+        "collection/**/*.d.ts": true,
+        "state/**/*.js": true,
+        "state/**/*.d.ts": true,
+        "validator/**/*.js": true,
+        "validator/**/*.d.ts": true,
+    }
+}
