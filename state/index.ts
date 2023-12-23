@@ -1,5 +1,5 @@
-import { subscribeAll, Subscription } from '@aldinh777/reactive/helper/subscription-helper';
-import { State, ChangeHandler } from '@aldinh777/reactive';
+import { State } from '@aldinh777/reactive';
+import { pushNonExists } from '@aldinh777/toolbox/array/operation';
 
 export type MultiChangeHandler<T> = (values: T[]) => any;
 
@@ -21,35 +21,44 @@ export const state = <T>(initial?: T): StateProxy<T> => {
     }) as StateProxy<T>;
 };
 
-export const observe = <T>(state: State<T>, handler: ChangeHandler<T>): Subscription => {
-    const subscription = state.onChange(handler);
-    const value = state.getValue();
-    handler(value, value);
-    return subscription;
+const ROOT_LIST = new WeakMap<State, State[]>();
+
+function filterDependency(states: State[]) {
+    const dependencies: State[] = [];
+    for (const dep of states) {
+        if (ROOT_LIST.has(dep)) {
+            const rl = ROOT_LIST.get(dep)!;
+            for (const root of rl) {
+                pushNonExists(dependencies, root);
+            }
+        } else {
+            pushNonExists(dependencies, dep);
+        }
+    }
+    return dependencies;
+}
+
+export const observe = <T>(...states: State<T>[]) => {
+    const dependencies = filterDependency(states);
+    return (handler: (...values: T[]) => any) => {
+        const exec = () => handler(...states.map((s) => s.getValue()));
+        for (const dep of dependencies) {
+            dep.onChange(exec);
+        }
+        exec();
+    };
 };
 
-export const observeAll = <T>(states: State<T>[], handler: MultiChangeHandler<T>): Subscription => {
-    const subscriptions = states.map((s) =>
-        s.onChange(() => handler(states.map((s) => s.getValue())))
-    );
-    handler(states.map((s) => s.getValue()));
-    return subscribeAll(subscriptions);
-};
-
-export const stateObserve = <T, U>(
-    st: State<T>,
-    handler: (value: T) => U
-): [StateProxy<U>, Subscription] => {
-    const s: StateProxy<U> = state();
-    const sub = observe(st, (value) => s.setValue(handler(value)));
-    return [s, sub];
-};
-
-export const stateObserveAll = <T, U>(
-    states: State<T>[],
-    handler: (values: T[]) => U
-): [StateProxy<U>, Subscription] => {
-    const s: StateProxy<U> = state();
-    const sub = observeAll(states, (values) => s.setValue(handler(values)));
-    return [s, sub];
+export const stateFrom = <T>(...states: State<T>[]) => {
+    const dependencies = filterDependency(states);
+    return <U>(handler: (...values: T[]) => U) => {
+        const s = state<U>();
+        const exec = () => (s.value = handler(...states.map((s) => s.getValue())));
+        for (const dep of dependencies) {
+            dep.onChange(exec);
+        }
+        exec();
+        ROOT_LIST.set(s, dependencies);
+        return s;
+    };
 };
